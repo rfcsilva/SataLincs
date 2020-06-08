@@ -1,0 +1,5 @@
+package earthExplorer
+
+object Search {
+
+}
