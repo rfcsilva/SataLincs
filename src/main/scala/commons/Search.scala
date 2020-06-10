@@ -1,5 +1,6 @@
 package commons
 
-class Search {
-
+class Search(
+             bounding_box: List[(Double, Double)],)
+{
 }
