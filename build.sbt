@@ -37,6 +37,9 @@ lazy val dependencies = new {
   val akka_streams = "com.typesafe.akka" %% "akka-stream" % akkaVersion
   val logback = "ch.qos.logback"  % "logback-classic" % "1.2.3"
 
+  val scala_jackson = "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.11.0"
+  val jackson_databinding = "com.fasterxml.jackson.core" % "jackson-databind" % "2.11.0"
+
   val http_testkit = "com.typesafe.akka" %% "akka-http-testkit"        % akkaHttpVersion % Test
   val actor_testkit = "com.typesafe.akka" %% "akka-actor-testkit-typed" % akkaVersion     % Test
   val scala_test = "org.scalatest"   %% "scalatest"                % "3.0.8"         % Test
@@ -48,6 +51,8 @@ lazy val commonDependencies = Seq(
   dependencies.actor_typed,
   dependencies.akka_streams,
   dependencies.logback,
+  dependencies.scala_jackson,
+  dependencies.jackson_databinding,
   dependencies.http_testkit,
   dependencies.actor_testkit,
   dependencies.scala_test
