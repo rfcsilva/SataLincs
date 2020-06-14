@@ -1,10 +1,13 @@
 package utils
 
+import java.io.IOException
+
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
+import akka.http.scaladsl.model.StatusCodes.{BadRequest, OK}
 import akka.http.scaladsl.model._
+import akka.http.scaladsl.unmarshalling.Unmarshal
 import akka.stream.ActorMaterializer
-import akka.util.ByteString
 import com.fasterxml.jackson.databind.{DeserializationFeature, ObjectMapper}
 import com.fasterxml.jackson.module.scala.{DefaultScalaModule, ScalaObjectMapper}
 
@@ -12,28 +15,12 @@ import scala.concurrent.{ExecutionContextExecutor, Future}
 import scala.util.{Failure, Success, Try}
 
 
-object HttpClient {
+object utils {
 
-  def POST_FORM(url: String, data: Map[String, String]): Unit ={
-    implicit val system: ActorSystem = ActorSystem()
-    implicit val materializer: ActorMaterializer = ActorMaterializer()
-    // needed for the future flatMap/onComplete in the end
-    implicit val executionContext: ExecutionContextExecutor = system.dispatcher
-
-    val json = toJson(data) match {
-      case Some(data) => data
-      case None => "{}"
-    }
-
-    println(json)
-    val responseFuture: Future[HttpResponse] = Http().singleRequest(HttpRequest(uri = url, method = HttpMethods.POST, entity = FormData(("jsonRequest", json)).toEntity))
-
-    responseFuture
-      .onComplete {
-        case Success(res) => res.entity.dataBytes.runFold(ByteString(""))(_ ++ _).foreach { body => println(body.utf8String) }
-        case Failure(_)   => sys.error("something wrong")
-      }
-  }
+  implicit val system: ActorSystem = ActorSystem()
+  implicit val materializer: ActorMaterializer = ActorMaterializer()
+  // needed for the future flatMap/onComplete in the end
+  implicit val executionContext: ExecutionContextExecutor = system.dispatcher
 
   def POST(url: String, data: Map[String, String]): Unit ={
     implicit val system: ActorSystem = ActorSystem()
