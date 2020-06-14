@@ -1,5 +1,0 @@
-package earthExplorer
-
-object Download {
-
-}

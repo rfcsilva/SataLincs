@@ -1,5 +1,0 @@
-package commons
-
-class Product {
-
-}
