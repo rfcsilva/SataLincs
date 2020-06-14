@@ -71,19 +71,4 @@ object EarthExplorerApi extends Api{
     }
     result
   }
-
-  def handle(response: HttpResponse) {
-    response.status match {
-      case OK if (response.entity.contentType == ContentTypes.`application/json`) =>
-        Unmarshal(response.entity).to[String].map { jsonString =>
-          Right(jsonString.parseJson)
-        }
-      case BadRequest => Future.successful(Left(s"Incorrect Params"))
-      case _ => Unmarshal(response.entity).to[String].flatMap { entity =>
-        val error = s"Google GeoCoding request failed with status code ${response.status} and entity $entity"
-        Future.failed(new IOException(error))
-      }
-    }
-  }
-
 }
