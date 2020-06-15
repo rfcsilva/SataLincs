@@ -1,4 +1,4 @@
-import earthExplorer.EarthExplorerApi
+import earthExplorer.{EarthExplorerApi, InvalidAuthenticationException}
 
 object Tester {
   def main(args: Array[String]): Unit = {

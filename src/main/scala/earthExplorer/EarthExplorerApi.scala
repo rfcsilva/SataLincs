@@ -4,13 +4,12 @@ import java.io.IOException
 
 import akka.actor.{ActorSystem, ClassicActorSystemProvider}
 import akka.http.scaladsl.Http
-import akka.http.scaladsl.model.StatusCodes.{BadRequest, OK}
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.unmarshalling.Unmarshal
 import akka.stream.{Materializer, SystemMaterializer}
 import com.typesafe.config.ConfigFactory
 import commons.Api
-import spray.json._
+import play.api.libs.json.{JsValue, Json}
 import utils.utils
 
 import scala.concurrent.{ExecutionContextExecutor, Future}
@@ -27,16 +26,27 @@ object EarthExplorerApi extends Api{
   implicit val executionContext: ExecutionContextExecutor = system.dispatcher
 
   val base_url : String = ConfigFactory.load().getString("satalincs.earth-explorer.base-url")
-  val token : String = null
+  var token: String = null
 
   override def login(username: String, password: String): Unit = {
     val loginData = Map("username" -> username, "password" -> password, "authType" -> "EROS", "catalogId" -> "EE")
-    val response = post_form(s"$base_url/login", loginData)
+    println(s"$base_url/login")
+    val response = post_form(s"${base_url}login", loginData)
 
     response.onComplete{
-      case Success(json) => println(json)
+      case Success(json) => parseLoginResponse(json)
       case Failure(_)   => sys.error("something wrong")
     }
+
+  }
+
+  def parseLoginResponse(token_data : String): Unit ={
+
+    val res_js = Json.parse(token_data)
+    if(token_data.contains("AUTH_INVALID"))
+        throw InvalidAuthenticationException("Wrong username or password")
+
+    token = (res_js \ "data").as[String]
   }
 
   def refreshToken(): Unit = ???

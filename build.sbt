@@ -39,6 +39,9 @@ lazy val dependencies = new {
 
   val scala_jackson = "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.11.0"
   val jackson_databinding = "com.fasterxml.jackson.core" % "jackson-databind" % "2.11.0"
+  val playJson = "com.typesafe.play" %% "play-json" % "2.9.0"
+  val json = "org.json" % "json" % "20200518"
+  val jsonPath = "com.jayway.jsonpath" % "json-path" % "2.4.0"
 
   val http_testkit = "com.typesafe.akka" %% "akka-http-testkit"        % akkaHttpVersion % Test
   val actor_testkit = "com.typesafe.akka" %% "akka-actor-testkit-typed" % akkaVersion     % Test
@@ -53,6 +56,9 @@ lazy val commonDependencies = Seq(
   dependencies.logback,
   dependencies.scala_jackson,
   dependencies.jackson_databinding,
+  dependencies.playJson,
+  dependencies.json,
+  dependencies.jsonPath,
   dependencies.http_testkit,
   dependencies.actor_testkit,
   dependencies.scala_test
